@@ -8,3 +8,4 @@ I am learning Python step by step with **hands-on examples** and uploading code 
 
 ## Topics Covered
 - Day01: Introduction to Python ✅
+- Day02: Basic Syntax
