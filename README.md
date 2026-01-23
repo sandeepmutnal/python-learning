@@ -12,3 +12,4 @@ I am learning Python step by step with **hands-on examples** and uploading code 
 - Day03: Variables & Data Types ✅
 - Day04: Input & Output ✅
 - Day05: Operators ✅
+- Day06: Conditional Statements ✅
