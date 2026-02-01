@@ -20,3 +20,5 @@ I am learning Python step by step with **hands-on examples** and uploading code 
 - Day11: Basic File Handling ✅
 - Day12: Basic Error Handling ✅
 - Day13: Classes and Objects (OOP) ✅
+- Day14: Attributes and Methods (OOP) ✅
+- Day15: Encapsulation (OOP) ✅
