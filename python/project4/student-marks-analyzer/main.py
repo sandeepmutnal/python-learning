@@ -14,15 +14,32 @@ def main():
 
     name = input("Enter student name: ")
 
-    subjects = int(input("Enter number of subjects: "))
+    # Validate number of subjects
+    while True:
+        try:
+            subjects = int(input("Enter number of subjects: "))
+            if subjects <= 0:
+                print("Subjects must be greater than 0.")
+                continue
+            break
+        except ValueError:
+            print("Please enter a valid number.")
 
     marks = []
     total = 0
 
     for i in range(subjects):
-        m = float(input(f"Enter mark {i+1}: "))
-        marks.append(m)
-        total += m
+        while True:
+            try:
+                m = float(input(f"Enter mark {i+1}: "))
+                if m < 0 or m > 100:
+                    print("Marks must be between 0 and 100.")
+                    continue
+                marks.append(m)
+                total += m
+                break
+            except ValueError:
+                print("Invalid input. Enter numeric value.")
 
     average = total / subjects
     grade = calculate_grade(average)
@@ -30,7 +47,7 @@ def main():
     print("\n--- Result ---")
     print("Name:", name)
     print("Total:", total)
-    print("Average:", average)
+    print("Average:", round(average, 2))
     print("Grade:", grade)
 
 

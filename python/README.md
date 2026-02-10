@@ -25,3 +25,5 @@ I am learning Python step by step with **hands-on examples** and uploading code 
 - Day16: Inheritance (OOP) ✅
 - Day17: Polymorphism (OOP) ✅    
 - Day18: Abstractio (OOP) ✅ 
+- Day19: Special Methods (OOP) ✅ 
+- Day20: Object Relationships (Composition & Aggregation) ✅
