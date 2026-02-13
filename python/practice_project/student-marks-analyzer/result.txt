@@ -1,0 +1,6 @@
+Student Marks Analyzer
+Name: san
+Total: 90.0
+Average: 90.0
+Grade: A
+Status: PASS

@@ -1,0 +1,6 @@
+
+---
+
+### **2️⃣ `requirements.txt`**
+```text
+# No external packages required for this simple app
