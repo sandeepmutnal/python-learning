@@ -12,7 +12,8 @@
         "done": false
     },
     {
-        "title": "game",
-        "done": false
+        "title": "Learning python",
+        "done": true,
+        "priority": "High"
     }
 ]
