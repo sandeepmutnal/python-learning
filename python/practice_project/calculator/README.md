@@ -1,16 +1,25 @@
-# 🧮 Python Calculator CLI
+# 🧮 Advanced Python CLI Calculator
 
-A command-line calculator program built in Python.
+A professional command-line calculator built using Python.
 
-## Features
-- Add, subtract, multiply, divide
-- Modulus, power, floor division
-- Square root
-- Continuous calculations with menu
-- Input validation
-- Error handling
+## 🚀 Features
 
-## How to Run
+- Basic Operations (Add, Subtract, Multiply, Divide)
+- Modulus, Power, Floor Division
+- Square Root
+- Continuous Menu System
+- Input Validation
+- Error Handling
+- 📜 Calculation History
+- 🗑️ Clear History
+- 💾 Save History to File
+
+## 📂 Files
+
+- main.py
+- history.txt (generated automatically)
+
+## ▶️ How to Run
 
 ```bash
 python main.py
