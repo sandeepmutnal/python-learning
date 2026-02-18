@@ -1,40 +1,22 @@
 # Number Guessing Game (Python)
 
-This is a simple Python mini-project built while learning Python fundamentals.
+A beginner-friendly Python mini project.
 
-The program asks the user to guess a secret number and keeps running until the correct number is entered.
-
----
+## Features
+- Random number generation
+- Limited attempts
+- High / Low hints
+- Input validation
+- Replay option
+- Function-based structure
 
 ## Concepts Used
 - Variables
-- Data types
-- Input / Output
-- Conditionals (if / else)
-- While loop
-- Basic debugging mindset
+- Loops
+- Conditionals
+- Functions
+- Exception handling
+- Random module
 
----
-
-## How It Works
-1. The program stores a secret number.
-2. The user enters a guess.
-3. The program checks the guess.
-4. If incorrect, it asks again.
-5. When correct, it prints "Correct!".
-
----
-
-## Example Code
-
-```python
-secret = 7
-guess = 0
-
-while guess != secret:
-    guess = int(input("Guess the number: "))
-
-    if guess == secret:
-        print("Correct!")
-    else:
-        print("Try again")
+## How to Run
+python main.py
