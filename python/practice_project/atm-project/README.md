@@ -4,14 +4,14 @@ A simple ATM simulation built using Python.
 
 ## Features
 
-- PIN verification (3 attempts limit)
-- Check account balance
-- Withdraw money
+## 🚀 Features
+- PIN authentication (3 attempts)
+- Check balance
 - Deposit money
+- Withdraw money
 - Change PIN
 - Transaction history
-- Input validation
-- Menu-based navigation
+- Saves transactions to file
 
 ## How to Run
 
@@ -19,11 +19,4 @@ A simple ATM simulation built using Python.
 2. Download or clone this repository
 3. Run the file:
     python atm.py
-
-## Future Improvements
-
-- Store data using file handling
-- Add multiple users
-- Add GUI version
-- Connect with database
 
