@@ -2,16 +2,15 @@
 
 A simple ATM simulation built using Python.
 
-## Features
-
 ## 🚀 Features
+
 - PIN authentication (3 attempts)
 - Check balance
-- Deposit money
-- Withdraw money
+- Deposit & withdraw money
 - Change PIN
 - Transaction history
-- Saves transactions to file
+- Saves data using JSON
+
 
 
 ## How to Run
