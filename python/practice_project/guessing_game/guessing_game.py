@@ -1,7 +1,8 @@
 # ==================================
-# Advanced Number Guessing Game 
+# Number Guessing Game - GUI Version (Day 3)
 # ==================================
 
+import tkinter as tk
 import random
 import os
 
@@ -9,120 +10,108 @@ BEST_SCORE_FILE = "best_score.txt"
 
 
 # -------------------------------
-# Load Best Score from File
+# Load & Save Best Score
 # -------------------------------
 def load_best_score():
     if os.path.exists(BEST_SCORE_FILE):
         with open(BEST_SCORE_FILE, "r") as file:
             return int(file.read())
-    return None
+    return 0
 
 
-# -------------------------------
-# Save Best Score to File
-# -------------------------------
 def save_best_score(score):
     with open(BEST_SCORE_FILE, "w") as file:
         file.write(str(score))
 
 
 # -------------------------------
-# Choose Difficulty
+# Game Class
 # -------------------------------
-def choose_difficulty():
-    print("\n🎮 Select Difficulty:")
-    print("1. Easy (1–10, 5 attempts)")
-    print("2. Medium (1–50, 7 attempts)")
-    print("3. Hard (1–100, 10 attempts)")
+class GuessingGameGUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("🎯 Number Guessing Game")
+        self.root.geometry("400x400")
 
-    choice = input("Enter choice (1/2/3): ")
+        self.best_score = load_best_score()
 
-    if choice == "1":
-        return 10, 5
-    elif choice == "2":
-        return 50, 7
-    elif choice == "3":
-        return 100, 10
-    else:
-        print("⚠ Invalid choice! Defaulting to Easy.")
-        return 10, 5
+        self.max_number = 10
+        self.max_attempts = 5
 
+        self.secret = random.randint(1, self.max_number)
+        self.attempts = 0
 
-# -------------------------------
-# Game Logic
-# -------------------------------
-def play_game(player_name, best_score):
-    max_number, max_attempts = choose_difficulty()
-    secret = random.randint(1, max_number)
+        # ---------------- UI ----------------
+        self.title_label = tk.Label(root, text="🎯 Guess the Number!", font=("Arial", 16))
+        self.title_label.pack(pady=10)
 
-    attempts = 0
+        self.info_label = tk.Label(root, text="Between 1 and 10", font=("Arial", 12))
+        self.info_label.pack()
 
-    print(f"\n🎯 {player_name}, I am thinking of a number between 1 and {max_number}.")
+        self.entry = tk.Entry(root, font=("Arial", 14))
+        self.entry.pack(pady=10)
 
-    while attempts < max_attempts:
+        self.result_label = tk.Label(root, text="", font=("Arial", 12))
+        self.result_label.pack()
+
+        self.attempt_label = tk.Label(root, text=f"Attempts left: {self.max_attempts}")
+        self.attempt_label.pack()
+
+        self.score_label = tk.Label(root, text=f"Best Score: {self.best_score}")
+        self.score_label.pack(pady=5)
+
+        self.guess_button = tk.Button(root, text="Guess", command=self.check_guess)
+        self.guess_button.pack(pady=5)
+
+        self.restart_button = tk.Button(root, text="Restart", command=self.restart_game)
+        self.restart_button.pack(pady=5)
+
+    # -------------------------------
+    # Check Guess
+    # -------------------------------
+    def check_guess(self):
         try:
-            guess = int(input("👉 Enter your guess: "))
-            attempts += 1
+            guess = int(self.entry.get())
+            self.attempts += 1
 
-            if guess == secret:
-                score = max_attempts - attempts + 1
+            if guess == self.secret:
+                score = self.max_attempts - self.attempts + 1
+                self.result_label.config(text=f"✅ Correct! Score: {score}")
 
-                print(f"\n✅ Correct, {player_name}! You guessed it in {attempts} attempts.")
-                print(f"🏆 Your Score: {score}")
-
-                # Update best score
-                if best_score is None or score > best_score:
-                    print("🔥 New Best Score!")
+                if score > self.best_score:
+                    self.best_score = score
                     save_best_score(score)
-                    best_score = score
+                    self.score_label.config(text=f"Best Score: {self.best_score}")
 
-                return best_score
-
-            elif guess < secret:
-                print("📉 Too low!")
+            elif guess < self.secret:
+                self.result_label.config(text="📉 Too Low!")
             else:
-                print("📈 Too high!")
+                self.result_label.config(text="📈 Too High!")
 
-            print(f"Attempts left: {max_attempts - attempts}")
+            remaining = self.max_attempts - self.attempts
+            self.attempt_label.config(text=f"Attempts left: {remaining}")
+
+            if remaining == 0 and guess != self.secret:
+                self.result_label.config(text=f"❌ Game Over! Number was {self.secret}")
 
         except ValueError:
-            print("⚠ Please enter a valid number!")
+            self.result_label.config(text="⚠ Enter a valid number!")
 
-    print(f"\n❌ Game Over! The number was {secret}.")
-    return best_score
-
-
-# -------------------------------
-# Main Function
-# -------------------------------
-def main():
-    print("🎉 Welcome to the Number Guessing Game!")
-
-    player_name = input("👤 Enter your name: ")
-
-    best_score = load_best_score()
-
-    if best_score:
-        print(f"🥇 Best Score so far: {best_score}")
-
-    games_played = 0
-
-    while True:
-        best_score = play_game(player_name, best_score)
-        games_played += 1
-
-        print(f"\n📊 Games Played: {games_played}")
-        if best_score:
-            print(f"🥇 Best Score: {best_score}")
-
-        again = input("\nDo you want to play again? (y/n): ").lower()
-        if again != "y":
-            print(f"\n👋 Thanks for playing, {player_name}!")
-            break
+    # -------------------------------
+    # Restart Game
+    # -------------------------------
+    def restart_game(self):
+        self.secret = random.randint(1, self.max_number)
+        self.attempts = 0
+        self.result_label.config(text="")
+        self.attempt_label.config(text=f"Attempts left: {self.max_attempts}")
+        self.entry.delete(0, tk.END)
 
 
 # -------------------------------
-# Run Game
+# Run App
 # -------------------------------
 if __name__ == "__main__":
-    main()
+    root = tk.Tk()
+    app = GuessingGameGUI(root)
+    root.mainloop()
