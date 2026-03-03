@@ -3,18 +3,25 @@
 A beginner-friendly Python mini project.
 
 ## 🚀 Features
+🚀 Features (Day 4 Update – Advanced GUI)
 
-🎨 Graphical User Interface (GUI)
-The game is upgraded from command-line to a window-based application using Tkinter, providing a more interactive and user-friendly experience.
+🎮 Difficulty Selection (Dynamic Gameplay)
+Users can choose between Easy, Medium, and Hard levels using a dropdown menu, which dynamically adjusts the number range and attempts.
 
-🖱 Button-Based Interaction
-Users can play the game using buttons instead of typing commands, making it easier and more intuitive.
+⏱ Countdown Timer
+A real-time timer adds challenge to the game. The player must guess the number before time runs out.
 
-🧾 Input Field for Guessing
-A text input box allows users to enter their guesses directly within the application window.
+📊 Game Statistics (Wins & Losses)
+Tracks and displays the number of wins and losses during the session, helping users monitor performance.
 
-💬 Live Feedback Messages
-The game instantly displays responses such as:
+🏆 Best Score Persistence
+The highest score is saved in a file and displayed in the interface, even after restarting the application.
+
+🎯 Attempts Tracking
+Displays remaining attempts dynamically after each guess.
+
+💬 Real-Time Feedback System
+Provides instant feedback:
 
 📉 Too Low
 
@@ -24,23 +31,22 @@ The game instantly displays responses such as:
 
 ❌ Game Over
 
-🔄 Restart Game Option
-A restart button allows users to quickly start a new game without closing the application.
+⏰ Time’s Up
 
-🏆 Score Display System
-Displays the current game score based on remaining attempts.
+🔐 Input Control (Game State Handling)
+Input field is automatically disabled when the game ends, preventing further interaction until restart.
 
-🥇 Persistent Best Score
-The best score is saved in a file and displayed in the GUI, even after restarting the application.
+🔄 Seamless Restart System
+Restart button resets the game, including timer, attempts, and secret number, without restarting the application.
 
-🎯 Attempts Tracking
-Shows the number of attempts left in real time during gameplay.
+🎨 Improved GUI Layout
+Better structured interface using labels, buttons, input fields, and dropdowns for a clean user experience.
 
 🧱 Object-Oriented Design
-The game is structured using classes, improving code organization and scalability.
+The application is built using classes, making the code modular, scalable, and maintainable.
 
 ⚡ Event-Driven Programming
-Game actions are triggered by user interactions such as button clicks, similar to real-world applications.
+Game actions are triggered by user interactions (button clicks, input), similar to real-world applications.
 
 
 ## How to Run
