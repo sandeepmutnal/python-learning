@@ -1,30 +1,33 @@
-# ATM Python Project 💳
+# 🏦 ATM System (Python CLI Project)
 
-A simple ATM simulation built using Python.
+A simple ATM system built using Python with file-based storage (JSON).
+
+---
 
 ## 🚀 Features
 
-👥 Multi-user system (multiple accounts supported)
-🔐 Login using Username or Account Number + 4-digit PIN
-🏦 Auto-generated unique account number for each user
-💰 Check account balance
-💵 Deposit money with validation
-💸 Withdraw money with balance check
-🔁 Transfer money between users
-📜 Full transaction history tracking
-📄 Mini statement (last 5 transactions)
-🕒 Timestamp added for every transaction
-❌ Delete account with confirmation
-🧠 Strong input validation (amount & PIN checks)
-🚫 3-attempt login security (account block protection)
-💾 Persistent data storage using JSON (accounts.json)
-⚠️ Error handling for invalid inputs
+- User Registration
+- Secure Login (PIN-based)
+- Balance Check
+- Deposit Money
+- Withdraw Money
+- Transfer Money
+- Transaction History
+- Mini Statement (last 5 transactions)
+- Delete Account
 
+---
 
-## How to Run
+## 🔒 Security
 
-1. Install Python (3.x)
-2. Download or clone this repository
-3. Run the file:
-    python atm.py
+- PIN is hidden during input
+- 3 login attempts limit
+- Basic validation implemented
 
+---
+
+## 🛠️ Tech Stack
+
+- Python
+- JSON (for storage)
+- OS & File Handling

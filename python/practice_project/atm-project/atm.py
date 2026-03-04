@@ -2,6 +2,7 @@ import os
 import json
 import sys
 from datetime import datetime
+import getpass   # 🔒 hide PIN input
 
 # ---------- PATH ----------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -14,8 +15,11 @@ if not os.path.exists(DATA_FILE):
 
 # ---------- LOAD / SAVE ----------
 def load_data():
-    with open(DATA_FILE, "r") as f:
-        return json.load(f)
+    try:
+        with open(DATA_FILE, "r") as f:
+            return json.load(f)
+    except:
+        return {}
 
 def save_data(data):
     with open(DATA_FILE, "w") as f:
@@ -35,13 +39,13 @@ def validate_pin(pin):
 def register():
     data = load_data()
 
-    username = input("Create username: ")
+    username = input("Create username: ").strip()
 
     if username in data:
         print("❌ User already exists")
         return
 
-    pin = input("Set 4-digit PIN: ")
+    pin = getpass.getpass("Set 4-digit PIN: ")
 
     if not validate_pin(pin):
         print("❌ Invalid PIN (must be 4 digits)")
@@ -59,11 +63,11 @@ def register():
     save_data(data)
     print(f"✅ Account created! Account No: {acc_no}")
 
-# ---------- LOGIN (USERNAME / ACC NO) ----------
+# ---------- LOGIN ----------
 def login():
     data = load_data()
 
-    user_input = input("Enter Username or Account No: ")
+    user_input = input("Enter Username or Account No: ").strip()
 
     user = None
 
@@ -77,7 +81,7 @@ def login():
         return None
 
     for i in range(3):
-        pin = input("Enter PIN: ")
+        pin = getpass.getpass("Enter PIN: ")
         if pin == data[user]["pin"]:
             print("✅ Login success")
             return user
@@ -105,8 +109,8 @@ def deposit(user, data):
 
         print("✅ Deposited")
 
-    except:
-        print("❌ Numbers only")
+    except ValueError:
+        print("❌ Enter numbers only")
 
 def withdraw(user, data):
     try:
@@ -121,16 +125,20 @@ def withdraw(user, data):
             data[user]["history"].append(f"{get_time()} → Withdraw ₹{amt}")
             save_data(data)
 
-            print("💵 Done")
+            print("💵 Withdrawal successful")
 
-    except:
-        print("❌ Numbers only")
+    except ValueError:
+        print("❌ Enter numbers only")
 
 def transfer(user, data):
-    receiver = input("Receiver username: ")
+    receiver = input("Receiver username: ").strip()
 
     if receiver not in data:
         print("❌ User not found")
+        return
+
+    if receiver == user:
+        print("❌ Cannot transfer to yourself")
         return
 
     try:
@@ -150,8 +158,8 @@ def transfer(user, data):
             save_data(data)
             print("✅ Transfer success")
 
-    except:
-        print("❌ Numbers only")
+    except ValueError:
+        print("❌ Enter numbers only")
 
 def show_history(user, data):
     print("\n📜 Full History:")
@@ -170,7 +178,6 @@ def mini_statement(user, data):
     else:
         print("No transactions")
 
-# 🆕 DELETE ACCOUNT
 def delete_account(user, data):
     confirm = input("Type YES to delete account: ")
 
@@ -216,9 +223,10 @@ def menu(user):
             if delete_account(user, data):
                 break
         elif ch == "8":
+            print("👋 Logged out")
             break
         else:
-            print("❌ Invalid")
+            print("❌ Invalid choice")
 
 # ---------- MAIN ----------
 def main():
@@ -236,9 +244,10 @@ def main():
             if user:
                 menu(user)
         elif ch == "3":
+            print("👋 Goodbye")
             sys.exit()
         else:
-            print("❌ Invalid")
+            print("❌ Invalid choice")
 
 if __name__ == "__main__":
     main()

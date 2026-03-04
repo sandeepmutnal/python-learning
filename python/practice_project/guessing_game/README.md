@@ -3,50 +3,51 @@
 A beginner-friendly Python mini project.
 
 ## 🚀 Features
-🚀 Features (Day 4 Update – Advanced GUI)
+⏱ Accurate Timer System (Bug Fixed)
+Fixed multiple timer issues. The countdown now runs correctly and stops immediately when the game ends.
 
-🎮 Difficulty Selection (Dynamic Gameplay)
-Users can choose between Easy, Medium, and Hard levels using a dropdown menu, which dynamically adjusts the number range and attempts.
+⏸ Game State Control
+The game properly tracks active/inactive state, preventing actions after the game is over.
 
-⏱ Countdown Timer
-A real-time timer adds challenge to the game. The player must guess the number before time runs out.
+⌨ Enter Key Support
+Users can press the Enter key to submit their guess, improving usability and speed.
 
-📊 Game Statistics (Wins & Losses)
-Tracks and displays the number of wins and losses during the session, helping users monitor performance.
+🧹 Auto Input Clearing
+The input field is automatically cleared after each guess for a smoother user experience.
 
-🏆 Best Score Persistence
-The highest score is saved in a file and displayed in the interface, even after restarting the application.
+🚫 Button Disable on Game Over
+The Guess button is disabled once the game ends, preventing invalid interactions.
 
-🎯 Attempts Tracking
-Displays remaining attempts dynamically after each guess.
+🔄 Improved Restart Logic
+Restarting the game now fully resets:
 
-💬 Real-Time Feedback System
-Provides instant feedback:
+Timer
 
-📉 Too Low
+Attempts
 
-📈 Too High
+Input field
 
-✅ Correct
+Game state
 
-❌ Game Over
+🎨 Enhanced UI Design
+Added background colors, better fonts, and styled buttons for a more polished application look.
 
-⏰ Time’s Up
+📢 Clear User Feedback Messages
+Improved clarity of messages like:
 
-🔐 Input Control (Game State Handling)
-Input field is automatically disabled when the game ends, preventing further interaction until restart.
+Correct guess
 
-🔄 Seamless Restart System
-Restart button resets the game, including timer, attempts, and secret number, without restarting the application.
+Too high / too low
 
-🎨 Improved GUI Layout
-Better structured interface using labels, buttons, input fields, and dropdowns for a clean user experience.
+Time’s up
 
-🧱 Object-Oriented Design
-The application is built using classes, making the code modular, scalable, and maintainable.
+Game over
 
-⚡ Event-Driven Programming
-Game actions are triggered by user interactions (button clicks, input), similar to real-world applications.
+🧠 Better User Experience (UX)
+Overall smoother interaction with proper controls, making the app feel like a real product.
+
+🧱 Cleaner and More Robust Code Structure
+Improved internal logic for handling timers, inputs, and game flow reliably.
 
 
 ## How to Run
