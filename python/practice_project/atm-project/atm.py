@@ -1,8 +1,10 @@
 import os
 import json
 import sys
+import hashlib
+import uuid
 from datetime import datetime
-import getpass   # 🔒 hide PIN input
+import getpass
 
 # ---------- PATH ----------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -25,12 +27,22 @@ def save_data(data):
     with open(DATA_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
+# ---------- SECURITY ----------
+def hash_pin(pin):
+    return hashlib.sha256(pin.encode()).hexdigest()
+
+def verify_pin(stored_hash, entered_pin):
+    return stored_hash == hash_pin(entered_pin)
+
 # ---------- HELPERS ----------
 def get_time():
     return datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
 def generate_acc_no(data):
     return str(100000 + len(data) + 1)
+
+def generate_txn_id():
+    return str(uuid.uuid4())[:8]
 
 def validate_pin(pin):
     return len(pin) == 4 and pin.isdigit()
@@ -48,16 +60,17 @@ def register():
     pin = getpass.getpass("Set 4-digit PIN: ")
 
     if not validate_pin(pin):
-        print("❌ Invalid PIN (must be 4 digits)")
+        print("❌ PIN must be exactly 4 digits")
         return
 
     acc_no = generate_acc_no(data)
 
     data[username] = {
         "account_no": acc_no,
-        "pin": pin,
+        "pin": hash_pin(pin),
         "balance": 10000,
-        "history": []
+        "history": [],
+        "locked": False
     }
 
     save_data(data)
@@ -68,7 +81,6 @@ def login():
     data = load_data()
 
     user_input = input("Enter Username or Account No: ").strip()
-
     user = None
 
     for username in data:
@@ -80,15 +92,22 @@ def login():
         print("❌ User not found")
         return None
 
+    if data[user].get("locked"):
+        print("🚫 Account is permanently locked.")
+        return None
+
     for i in range(3):
         pin = getpass.getpass("Enter PIN: ")
-        if pin == data[user]["pin"]:
+
+        if verify_pin(data[user]["pin"], pin):
             print("✅ Login success")
             return user
         else:
             print(f"❌ Wrong PIN ({i+1}/3)")
 
-    print("🚫 Account blocked")
+    data[user]["locked"] = True
+    save_data(data)
+    print("🚫 Account locked permanently after 3 failed attempts.")
     return None
 
 # ---------- FEATURES ----------
@@ -103,11 +122,15 @@ def deposit(user, data):
             print("❌ Invalid amount")
             return
 
-        data[user]["balance"] += amt
-        data[user]["history"].append(f"{get_time()} → Deposited ₹{amt}")
-        save_data(data)
+        txn_id = generate_txn_id()
 
-        print("✅ Deposited")
+        data[user]["balance"] += amt
+        data[user]["history"].append(
+            f"{get_time()} | TXN:{txn_id} | Deposited ₹{amt}"
+        )
+
+        save_data(data)
+        print("✅ Deposit successful")
 
     except ValueError:
         print("❌ Enter numbers only")
@@ -121,10 +144,14 @@ def withdraw(user, data):
         elif amt > data[user]["balance"]:
             print("❌ Insufficient balance")
         else:
-            data[user]["balance"] -= amt
-            data[user]["history"].append(f"{get_time()} → Withdraw ₹{amt}")
-            save_data(data)
+            txn_id = generate_txn_id()
 
+            data[user]["balance"] -= amt
+            data[user]["history"].append(
+                f"{get_time()} | TXN:{txn_id} | Withdraw ₹{amt}"
+            )
+
+            save_data(data)
             print("💵 Withdrawal successful")
 
     except ValueError:
@@ -149,34 +176,41 @@ def transfer(user, data):
         elif amt > data[user]["balance"]:
             print("❌ Not enough balance")
         else:
+            txn_id = generate_txn_id()
+
             data[user]["balance"] -= amt
             data[receiver]["balance"] += amt
 
-            data[user]["history"].append(f"{get_time()} → Sent ₹{amt} to {receiver}")
-            data[receiver]["history"].append(f"{get_time()} → Received ₹{amt} from {user}")
+            data[user]["history"].append(
+                f"{get_time()} | TXN:{txn_id} | Sent ₹{amt} to {receiver}"
+            )
+
+            data[receiver]["history"].append(
+                f"{get_time()} | TXN:{txn_id} | Received ₹{amt} from {user}"
+            )
 
             save_data(data)
-            print("✅ Transfer success")
+            print("✅ Transfer successful")
 
     except ValueError:
         print("❌ Enter numbers only")
 
 def show_history(user, data):
-    print("\n📜 Full History:")
+    print("\n📜 Full Transaction History")
     if data[user]["history"]:
         for h in data[user]["history"]:
             print("➡", h)
     else:
-        print("No transactions")
+        print("No transactions found")
 
 def mini_statement(user, data):
-    print("\n📄 Last 5 Transactions:")
+    print("\n📄 Last 5 Transactions")
     last = data[user]["history"][-5:]
     if last:
         for h in last:
             print("➡", h)
     else:
-        print("No transactions")
+        print("No transactions found")
 
 def delete_account(user, data):
     confirm = input("Type YES to delete account: ")
@@ -184,7 +218,7 @@ def delete_account(user, data):
     if confirm == "YES":
         del data[user]
         save_data(data)
-        print("❌ Account deleted")
+        print("❌ Account deleted permanently")
         return True
     else:
         print("Cancelled")
