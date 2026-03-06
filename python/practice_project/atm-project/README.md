@@ -1,33 +1,36 @@
-# 🏦 ATM System (Python CLI Project)
+# 🏦 Secure ATM System (Python CLI Project)
 
-A simple ATM system built using Python with file-based storage (JSON).
+A secure Command Line ATM system built using Python with JSON-based file storage and encrypted PIN authentication.
 
 ---
 
 ## 🚀 Features
 
+### 🔐 Security Features
+- SHA256 PIN Hashing (Encrypted storage)
+- Hidden PIN input using `getpass`
+- Account lock after 3 failed login attempts
+- Unique Transaction ID (UUID based)
+
+### 💳 Banking Features
 - User Registration
-- Secure Login (PIN-based)
+- Secure Login (Username or Account Number)
 - Balance Check
-- Deposit Money
-- Withdraw Money
+- Deposit
+- Withdraw
 - Transfer Money
-- Transaction History
-- Mini Statement (last 5 transactions)
+- Full Transaction History
+- Mini Statement (Last 5 transactions)
 - Delete Account
 
 ---
 
-## 🔒 Security
+## 🛠️ Technologies Used
 
-- PIN is hidden during input
-- 3 login attempts limit
-- Basic validation implemented
-
----
-
-## 🛠️ Tech Stack
-
-- Python
-- JSON (for storage)
+- Python 3
+- JSON (File Storage)
+- Hashlib (Security Hashing)
+- UUID (Transaction ID generation)
 - OS & File Handling
+
+
