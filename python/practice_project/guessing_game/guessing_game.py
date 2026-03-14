@@ -1,5 +1,5 @@
 # ==================================
-# Advanced GUI Number Guessing Game (Day 5 - Pro Version)
+# Advanced GUI Number Guessing Game
 # ==================================
 
 import tkinter as tk
@@ -8,22 +8,27 @@ import random
 import os
 import json
 
-DATA_FILE = "game_data.json"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_FILE = os.path.join(BASE_DIR, "game_data.json")
 
 
-# -------------------------------
-# File Handling
-# -------------------------------
 def load_data():
-    if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, "r") as file:
-            return json.load(file)
-    return {"best_score": 0, "wins": 0, "losses": 0}
+    if not os.path.exists(DATA_FILE):
+        default_data = {"best_score": 0, "wins": 0, "losses": 0}
+        with open(DATA_FILE, "w") as f:
+            json.dump(default_data, f)
+        return default_data
+
+    try:
+        with open(DATA_FILE, "r") as f:
+            return json.load(f)
+    except:
+        return {"best_score": 0, "wins": 0, "losses": 0}
 
 
 def save_data(data):
-    with open(DATA_FILE, "w") as file:
-        json.dump(data, file)
+    with open(DATA_FILE, "w") as f:
+        json.dump(data, f)
 
 
 # -------------------------------
@@ -32,10 +37,13 @@ def save_data(data):
 class AdvancedGame:
 
     def __init__(self, root):
+
         self.root = root
         self.root.title("🎯 Advanced Guessing Game")
-        self.root.geometry("450x550")
+        self.root.geometry("450x520")
+        self.root.resizable(False, False)
 
+        # Load saved data
         self.data = load_data()
 
         self.best_score = self.data["best_score"]
@@ -44,7 +52,6 @@ class AdvancedGame:
 
         self.timer_id = None
         self.game_active = True
-
         self.dark_mode = False
 
         self.create_widgets()
@@ -54,19 +61,21 @@ class AdvancedGame:
     def create_widgets(self):
 
         self.main_frame = tk.Frame(self.root)
-        self.main_frame.pack(pady=10)
+        self.main_frame.pack(pady=15)
 
-        self.title = tk.Label(self.main_frame,
-                              text="🎯 Guess The Number",
-                              font=("Arial", 18, "bold"))
-        self.title.pack(pady=10)
+        tk.Label(
+            self.main_frame,
+            text="🎯 Guess The Number",
+            font=("Arial", 18, "bold")
+        ).pack(pady=10)
 
         tk.Label(self.main_frame, text="Select Difficulty").pack()
 
         self.difficulty = ttk.Combobox(
             self.main_frame,
             values=["Easy", "Medium", "Hard"],
-            state="readonly")
+            state="readonly"
+        )
         self.difficulty.current(0)
         self.difficulty.pack(pady=5)
 
@@ -76,13 +85,13 @@ class AdvancedGame:
         self.timer_label = tk.Label(
             self.main_frame,
             text="⏱ Time: 30",
-            font=("Arial", 12, "bold"))
-        self.timer_label.pack()
+            font=("Arial", 12, "bold")
+        )
+        self.timer_label.pack(pady=5)
 
         self.entry = tk.Entry(self.main_frame, font=("Arial", 14))
         self.entry.pack(pady=10)
-
-        self.entry.bind("<Return>", lambda e: self.check_guess())
+        self.entry.bind("<Return>", lambda event: self.check_guess())
 
         self.result_label = tk.Label(self.main_frame, text="", font=("Arial", 12))
         self.result_label.pack()
@@ -91,11 +100,12 @@ class AdvancedGame:
         self.attempt_label.pack()
 
         self.stats_label = tk.Label(self.main_frame, text="")
-        self.stats_label.pack()
+        self.stats_label.pack(pady=5)
 
         self.best_label = tk.Label(
             self.main_frame,
-            text=f"🥇 Best Score: {self.best_score}")
+            text=f"🥇 Best Score: {self.best_score}"
+        )
         self.best_label.pack()
 
         self.guess_button = tk.Button(
@@ -103,7 +113,8 @@ class AdvancedGame:
             text="Guess",
             command=self.check_guess,
             bg="#4CAF50",
-            fg="white")
+            fg="white"
+        )
         self.guess_button.pack(pady=5)
 
         tk.Button(
@@ -111,12 +122,14 @@ class AdvancedGame:
             text="New Game",
             command=self.start_game,
             bg="#2196F3",
-            fg="white").pack(pady=5)
+            fg="white"
+        ).pack(pady=5)
 
         tk.Button(
             self.main_frame,
             text="Toggle Dark Mode 🌙",
-            command=self.toggle_theme).pack(pady=5)
+            command=self.toggle_theme
+        ).pack(pady=5)
 
     # ---------------- Theme ----------------
     def toggle_theme(self):
@@ -185,14 +198,11 @@ class AdvancedGame:
             return
 
         if self.time_left > 0:
-
             self.timer_label.config(text=f"⏱ Time: {self.time_left}")
             self.time_left -= 1
-
             self.timer_id = self.root.after(1000, self.run_timer)
 
         else:
-
             self.losses += 1
             self.end_game(False, "⏰ Time's Up!")
 
@@ -203,7 +213,6 @@ class AdvancedGame:
             return
 
         try:
-
             guess = int(self.entry.get())
             self.entry.delete(0, tk.END)
 
@@ -212,7 +221,6 @@ class AdvancedGame:
             if guess == self.secret:
 
                 score = self.max_attempts - self.attempts + 1
-
                 self.wins += 1
 
                 if score > self.best_score:
@@ -230,13 +238,10 @@ class AdvancedGame:
             self.update_attempts()
 
             if self.attempts >= self.max_attempts:
-
                 self.losses += 1
-                self.end_game(False,
-                              f"❌ Game Over! Number was {self.secret}")
+                self.end_game(False, f"❌ Game Over! Number was {self.secret}")
 
         except ValueError:
-
             self.result_label.config(text="⚠ Enter a valid number!")
 
     # ---------------- End Game ----------------
@@ -263,17 +268,16 @@ class AdvancedGame:
     def update_attempts(self):
 
         remaining = self.max_attempts - self.attempts
-
         self.attempt_label.config(text=f"Attempts Left: {remaining}")
 
     def update_stats(self):
 
         total = self.wins + self.losses
-
         win_rate = (self.wins / total) * 100 if total > 0 else 0
 
         self.stats_label.config(
-            text=f"📊 Wins: {self.wins} | Losses: {self.losses} | Win Rate: {win_rate:.1f}%")
+            text=f"📊 Wins: {self.wins} | Losses: {self.losses} | Win Rate: {win_rate:.1f}%"
+        )
 
         self.best_label.config(text=f"🥇 Best Score: {self.best_score}")
 
@@ -282,7 +286,5 @@ class AdvancedGame:
 if __name__ == "__main__":
 
     root = tk.Tk()
-
-    game = AdvancedGame(root)
-
+    app = AdvancedGame(root)
     root.mainloop()
