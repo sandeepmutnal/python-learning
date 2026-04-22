@@ -3,6 +3,7 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
 
 
 # Dataset
@@ -14,17 +15,29 @@ data = {
 
 df = pd.DataFrame(data)
 
-
-print("Salary Dataset Loaded Successfully ✅\n")
+print("Dataset Loaded Successfully ✅\n")
 print(df)
 
 
-# Visualization
+# Features and Label
 
-plt.scatter(df["Experience"], df["Salary"])
+X = df[["Experience"]]
+y = df["Salary"]
 
-plt.title("Experience vs Salary Graph")
-plt.xlabel("Years of Experience")
-plt.ylabel("Salary (LPA)")
 
-plt.show()
+# Create Model
+
+model = LinearRegression()
+
+
+# Train Model
+
+model.fit(X, y)
+
+
+# Predict Salary
+
+prediction = model.predict([[5]])
+
+print("\nPredicted Salary for 5 Years Experience:")
+print(round(prediction[0], 2), "LPA")
