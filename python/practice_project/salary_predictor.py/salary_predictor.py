@@ -1,9 +1,10 @@
 # Project 2
-# Salary Predictor AI Model (Interactive Version)
+# Salary Predictor GUI App
 
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+import tkinter as tk
 
 
 # Dataset
@@ -15,11 +16,8 @@ data = {
 
 df = pd.DataFrame(data)
 
-print("Dataset Loaded Successfully ✅\n")
-print(df)
 
-
-# Features and Label
+# Features & Labels
 
 X = df[["Experience"]]
 y = df["Salary"]
@@ -41,21 +39,49 @@ model = LinearRegression()
 model.fit(X_train, y_train)
 
 
-# Accuracy Score
+# Prediction Function
 
-accuracy = model.score(X_test, y_test)
-print("\nModel Accuracy:", round(accuracy * 100, 2), "%")
+def predict_salary():
+    try:
+        exp = float(entry_exp.get())
+        prediction = model.predict([[exp]])
+        result_label.config(
+            text="Predicted Salary: ₹" + str(round(prediction[0], 2)) + " LPA"
+        )
+    except:
+        result_label.config(text="Please enter valid number")
 
 
-# User Input
+# GUI Window
 
-print("\nEnter Candidate Details:")
+window = tk.Tk()
+window.title("Salary Predictor AI App")
+window.geometry("350x250")
 
-experience = float(input("Enter Years of Experience: "))
+
+# Input Label
+
+tk.Label(window, text="Years of Experience").pack(pady=5)
+
+entry_exp = tk.Entry(window)
+entry_exp.pack()
 
 
-# Prediction
+# Button
 
-prediction = model.predict([[experience]])
+tk.Button(
+    window,
+    text="Predict Salary",
+    command=predict_salary
+).pack(pady=10)
 
-print("\n🎯 Predicted Salary:", round(prediction[0], 2), "LPA")
+
+# Result Label
+
+result_label = tk.Label(window, text="")
+result_label.pack()
+
+
+# Run App
+
+window.mainloop()
