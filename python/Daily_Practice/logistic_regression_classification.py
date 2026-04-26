@@ -46,4 +46,4 @@ print(prediction)
 probability = model.predict_proba([[5]])
 
 print("\nPrediction Probability:")
-print(probability)
+print(probability)decision_tree_model.py
