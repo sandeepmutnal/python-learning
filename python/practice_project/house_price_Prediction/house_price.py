@@ -2,7 +2,7 @@
 # House Price Predictor
 
 import pandas as pd
-import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
 
 
 # Dataset
@@ -20,34 +20,25 @@ print("Dataset Loaded Successfully ✅\n")
 print(df)
 
 
-# 📊 Visualization 1: Area vs Price
+# Features and Label
 
-plt.scatter(df["Area"], df["Price"])
-
-plt.xlabel("Area (sq.ft)")
-plt.ylabel("Price (Lakhs)")
-plt.title("Area vs House Price")
-
-plt.show()
+X = df[["Area", "Bedrooms", "Location_Score"]]
+y = df["Price"]
 
 
-# 📊 Visualization 2: Bedrooms vs Price
+# Create Model
 
-plt.scatter(df["Bedrooms"], df["Price"])
-
-plt.xlabel("Bedrooms")
-plt.ylabel("Price (Lakhs)")
-plt.title("Bedrooms vs House Price")
-
-plt.show()
+model = LinearRegression()
 
 
-# 📊 Visualization 3: Location Score vs Price
+# Train Model
 
-plt.scatter(df["Location_Score"], df["Price"])
+model.fit(X, y)
 
-plt.xlabel("Location Score")
-plt.ylabel("Price (Lakhs)")
-plt.title("Location Score vs House Price")
 
-plt.show()
+# Predict Price
+
+prediction = model.predict([[2000, 3, 7]])
+
+print("\nPredicted House Price:")
+print(round(prediction[0], 2), "Lakhs")
