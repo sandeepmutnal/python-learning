@@ -2,7 +2,7 @@
 # Customer Churn Prediction
 
 import pandas as pd
-import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
 
 
 # Dataset
@@ -20,34 +20,33 @@ print("Dataset Loaded Successfully ✅\n")
 print(df)
 
 
-# 📊 Visualization 1: Monthly Bill vs Churn
+# Features and Label
 
-plt.scatter(df["Monthly_Bill"], df["Churn"])
-
-plt.xlabel("Monthly Bill")
-plt.ylabel("Churn (0 = Stay, 1 = Leave)")
-plt.title("Monthly Bill vs Customer Churn")
-
-plt.show()
+X = df[["Monthly_Bill", "Tenure", "Support_Calls"]]
+y = df["Churn"]
 
 
-# 📊 Visualization 2: Support Calls vs Churn
+# Create Model
 
-plt.scatter(df["Support_Calls"], df["Churn"])
-
-plt.xlabel("Support Calls")
-plt.ylabel("Churn (0 = Stay, 1 = Leave)")
-plt.title("Support Calls vs Customer Churn")
-
-plt.show()
+model = LogisticRegression()
 
 
-# 📊 Visualization 3: Tenure vs Churn
+# Train Model
 
-plt.scatter(df["Tenure"], df["Churn"])
+model.fit(X, y)
 
-plt.xlabel("Customer Tenure")
-plt.ylabel("Churn (0 = Stay, 1 = Leave)")
-plt.title("Tenure vs Customer Churn")
 
-plt.show()
+# Predict Customer Churn
+
+prediction = model.predict([[800, 3, 5]])
+
+print("\nPrediction Result:")
+print(prediction)
+
+
+# Final Output
+
+if prediction[0] == 1:
+    print("⚠️ Customer May Leave")
+else:
+    print("✅ Customer Will Stay")
