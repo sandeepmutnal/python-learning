@@ -3,6 +3,8 @@
 
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, classification_report
 
 
 # Dataset
@@ -27,19 +29,50 @@ X = df[["Fever", "Cough", "Headache", "Fatigue"]]
 y = df["Disease"]
 
 
-# Create Model
+# Train/Test Split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42
+)
+
+print("\nTraining Data:", len(X_train))
+print("Testing Data:", len(X_test))
+
+
+# Model
 
 model = DecisionTreeClassifier()
 
-
-# Train Model
-
-model.fit(X, y)
+model.fit(X_train, y_train)
 
 
-# Predict Disease
+# Predictions
 
-prediction = model.predict([[1, 1, 1, 1]])
+y_pred = model.predict(X_test)
 
-print("\nPredicted Disease:")
-print(prediction[0])
+print("\nPredictions:")
+print(y_pred)
+
+
+# Accuracy
+
+accuracy = model.score(X_test, y_test)
+
+print("\nModel Accuracy:", round(accuracy * 100, 2), "%")
+
+
+# Confusion Matrix
+
+cm = confusion_matrix(y_test, y_pred)
+
+print("\nConfusion Matrix:")
+print(cm)
+
+
+# Classification Report
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
