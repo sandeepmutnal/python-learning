@@ -3,6 +3,7 @@
 
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
 
 
 # Dataset
@@ -38,20 +39,38 @@ X = df["News"]
 y = df["Label"]
 
 
-# TF-IDF Vectorizer
+# TF-IDF Vectorization
 
 vectorizer = TfidfVectorizer()
 
 X_vectorized = vectorizer.fit_transform(X)
 
 
-# Output
+# Create Model
 
-print("\nText Converted into Numbers Successfully ✅")
-
-print("\nShape of Data:")
-print(X_vectorized.shape)
+model = MultinomialNB()
 
 
-print("\nFeature Names:")
-print(vectorizer.get_feature_names_out())
+# Train Model
+
+model.fit(X_vectorized, y)
+
+
+# Test News
+
+test_news = [
+    "Aliens attacked India yesterday"
+]
+
+
+# Convert Test News into Numbers
+
+test_vector = vectorizer.transform(test_news)
+
+
+# Prediction
+
+prediction = model.predict(test_vector)
+
+print("\nPrediction Result:")
+print(prediction[0])
