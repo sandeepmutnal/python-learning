@@ -1,5 +1,5 @@
 # Project 8
-# NLP Preprocessing Chatbot
+# Intent Recognition Chatbot
 
 import string
 
@@ -15,34 +15,55 @@ while True:
     user_input = input("You: ")
 
 
-    # Convert to lowercase
+    # NLP Preprocessing
 
     user_input = user_input.lower()
-
-
-    # Remove punctuation
 
     user_input = user_input.translate(
         str.maketrans('', '', string.punctuation)
     )
 
 
-    # Chatbot Responses
+    # Greeting Intent
 
-    if user_input == "hello":
-        print("Bot: Hello! Welcome!")
+    greetings = [
+        "hello",
+        "hi",
+        "hey"
+    ]
 
-    elif user_input == "how are you":
-        print("Bot: I am fine. Thank you!")
 
-    elif user_input == "what is your name":
-        print("Bot: I am an AI chatbot.")
+    # Help Intent
 
-    elif user_input == "python":
-        print("Bot: Python is a powerful programming language.")
+    help_words = [
+        "help",
+        "support",
+        "assist"
+    ]
 
-    elif user_input == "help":
-        print("Bot: I can answer simple questions.")
+
+    # Python Intent
+
+    python_words = [
+        "python",
+        "programming",
+        "coding"
+    ]
+
+
+    # Intent Recognition Logic
+
+    if any(word in user_input for word in greetings):
+        print("Bot: Hello! Nice to meet you!")
+
+    elif any(word in user_input for word in help_words):
+        print("Bot: I am here to help you!")
+
+    elif any(word in user_input for word in python_words):
+        print("Bot: Python is great for AI and software development.")
+
+    elif "ai" in user_input:
+        print("Bot: AI means Artificial Intelligence.")
 
     elif user_input == "bye":
         print("Bot: Goodbye!")
