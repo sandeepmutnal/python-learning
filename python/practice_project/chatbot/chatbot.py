@@ -1,11 +1,43 @@
 # Project 8
-# Intent Recognition Chatbot
+# TF-IDF Intelligent Chatbot
 
-import string
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 
-print("🤖 AI Chatbot Started")
-print("Type 'bye' to stop the chatbot\n")
+# Training Questions
+
+questions = [
+    "hello",
+    "how are you",
+    "what is python",
+    "what is ai",
+    "help me",
+    "bye"
+]
+
+
+# Bot Responses
+
+responses = [
+    "Hello! Nice to meet you!",
+    "I am fine. Thank you!",
+    "Python is a programming language.",
+    "AI means Artificial Intelligence.",
+    "I am here to help you.",
+    "Goodbye!"
+]
+
+
+# TF-IDF Vectorizer
+
+vectorizer = TfidfVectorizer()
+
+question_vectors = vectorizer.fit_transform(questions)
+
+
+print("🤖 Intelligent AI Chatbot Started\n")
 
 
 while True:
@@ -15,59 +47,37 @@ while True:
     user_input = input("You: ")
 
 
-    # NLP Preprocessing
+    # Convert User Input into Numbers
 
-    user_input = user_input.lower()
+    user_vector = vectorizer.transform([user_input])
 
-    user_input = user_input.translate(
-        str.maketrans('', '', string.punctuation)
+
+    # Similarity Calculation
+
+    similarity = cosine_similarity(
+        user_vector,
+        question_vectors
     )
 
 
-    # Greeting Intent
+    # Best Match
 
-    greetings = [
-        "hello",
-        "hi",
-        "hey"
-    ]
+    best_match = np.argmax(similarity)
 
 
-    # Help Intent
+    # Get Similarity Score
 
-    help_words = [
-        "help",
-        "support",
-        "assist"
-    ]
+    best_score = similarity[0][best_match]
 
 
-    # Python Intent
+    # Response Logic
 
-    python_words = [
-        "python",
-        "programming",
-        "coding"
-    ]
+    if best_score > 0.3:
 
+        print("Bot:", responses[best_match])
 
-    # Intent Recognition Logic
-
-    if any(word in user_input for word in greetings):
-        print("Bot: Hello! Nice to meet you!")
-
-    elif any(word in user_input for word in help_words):
-        print("Bot: I am here to help you!")
-
-    elif any(word in user_input for word in python_words):
-        print("Bot: Python is great for AI and software development.")
-
-    elif "ai" in user_input:
-        print("Bot: AI means Artificial Intelligence.")
-
-    elif user_input == "bye":
-        print("Bot: Goodbye!")
-        break
+        if questions[best_match] == "bye":
+            break
 
     else:
         print("Bot: Sorry, I do not understand.")
