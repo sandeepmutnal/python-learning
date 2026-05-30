@@ -1,76 +1,64 @@
 # Project 8
-# TF-IDF Intelligent Chatbot
+# Multi-Intent AI Assistant
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 
-# Training Questions
+# Knowledge Base
 
 questions = [
     "hello",
+    "hi",
     "how are you",
     "what is python",
     "what is ai",
+    "what is machine learning",
+    "what is data science",
+    "how to get a software job",
     "help me",
     "bye"
 ]
 
-
-# Bot Responses
-
 responses = [
-    "Hello! Nice to meet you!",
-    "I am fine. Thank you!",
-    "Python is a programming language.",
+    "Hello! Nice to meet you.",
+    "Hi! How can I help you?",
+    "I am doing well.",
+    "Python is a popular programming language.",
     "AI means Artificial Intelligence.",
+    "Machine Learning helps computers learn from data.",
+    "Data Science extracts insights from data.",
+    "Build projects, learn DSA, and practice coding interviews.",
     "I am here to help you.",
     "Goodbye!"
 ]
 
 
-# TF-IDF Vectorizer
+# Vectorization
 
 vectorizer = TfidfVectorizer()
 
 question_vectors = vectorizer.fit_transform(questions)
 
-
-print("🤖 Intelligent AI Chatbot Started\n")
+print("🤖 AI Assistant Started")
+print("Type 'bye' to exit.\n")
 
 
 while True:
 
-    # User Input
-
     user_input = input("You: ")
 
-
-    # Convert User Input into Numbers
-
     user_vector = vectorizer.transform([user_input])
-
-
-    # Similarity Calculation
 
     similarity = cosine_similarity(
         user_vector,
         question_vectors
     )
 
-
-    # Best Match
-
     best_match = np.argmax(similarity)
 
-
-    # Get Similarity Score
-
     best_score = similarity[0][best_match]
-
-
-    # Response Logic
 
     if best_score > 0.3:
 
@@ -80,4 +68,4 @@ while True:
             break
 
     else:
-        print("Bot: Sorry, I do not understand.")
+        print("Bot: Sorry, I don't understand that yet.")
